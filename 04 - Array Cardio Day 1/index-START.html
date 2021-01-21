@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -37,29 +37,100 @@
     
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    /* const fifteen = inventors.filter(function(inventor){
+          if(inventor.year >= 1500 && inventor.year < 1600){
+            return true;       //keep it! you do not need else, false throt it to garbage
+          }
+    });*/
 
+    /* const fifteen = inventors.filter(inventor => {
+          if(inventor.year >= 1500 && inventor.year < 1600){
+            return true; //keep it! you do not need else, false throt it to garbage
+          }
+    }); */
+
+    const fifteen = inventors.filter(inventor => (inventor.year >= 1500 && inventor.year < 1600))
+    console.table(fifteen);
+    // in map same amount of items return
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
-
+    const fullNames = inventors.map(inventor => `${inventor.first} ${inventor.last} ${inventor.year}`);
+    console.table(fullNames);
+ 
+    //you get two items ask to sort  --> a or b? return 1 or -1 for order of the list
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    /*const ordered = inventors.sort(function(a, b){
+      if(a.year > b.year){
+        return 1 ;
+      }else {
+        return -1;
+      }
+    }); */
+    const ordered = inventors.sort((a,b) => a.year > b.year ? 1 : -1) ;
+    console.table(ordered);
 
+    // instead of using "for loop"  --> cleaner, it is also loops over every single one
+    //total => what you've returned from this function last time, first time we don't have total (undefined) so add 0
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
+    const totalYears = inventors.reduce((total, inventor) => {
+      return total + (inventor.passed - inventor.year);
+    }, 0);
+
+    console.log(totalYears);
 
     // 5. Sort the inventors by years lived
+    const oldest = inventors.sort(function(a, b){
+      const lastGuy = a.passed - b.passed ;
+      const nextGuy = b.passed - a.passed ;
+      return lastGuy > nextGuy ? 1 : -1;
+      /*if(lastGuy > nextGuy){
+        return -1;
+      }else{
+        return -1;
+      }*/
+    });
+
+    console.table(oldest);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+    //it could be (.mw category a )    -- you can use querySelector in any DOM element
+    //const links = [...category.querySelectorAll('a')]; also works --> spread
+
+    /*const category = document.querySelector('.mw-category');
+    const links = Array.from(category.querySelectorAll('a'));
+    //take list of links kick out list of names, but it is a NodeList not an array (no map)
+    const de = links
+                .map(link => link.textContent)
+                .filter(streetName => streetName.includes('de'));*/
 
 
+    //split with common ', '    , you can use arrow again
     // 7. sort Exercise
-    // Sort the people alphabetically by last name
+    // Sort the people alphabetically by last name 
+    const alpha = people.sort(function(lastOne, nextOne){
+      const [aLast, aFirst] = lastOne.split(', ');
+      const [bLast, bFirst] = nextOne.split(', ');       
+      return aLast > bLast ? 1 : -1 ;
+    })
 
+    console.log(alpha);
+    // we need to start with an blank object {}
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
 
+    const transportation = data.reduce(function(obj, item){
+      if(!obj[item]){
+        obj[item] = 0;
+      }
+      obj[item]++;
+      return obj;
+    }, {})
+
+    console.log(transportation);
   </script>
 </body>
 </html>
