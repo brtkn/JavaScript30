@@ -132,7 +132,7 @@
         if(e.propertyName.includes('flex')){
           this.classList.toggle('open-active');
         }
-      }
+      };
       // toggleOpen without parentheses, because we don't want to use it when page is loading. Reference is enough.
       panels.forEach(panel => panel.addEventListener('click', toggleOpen));
       panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
