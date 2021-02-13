@@ -7,6 +7,19 @@
 </head>
 <body>
 <script>
+  const pressed = [];
+  const secretCode = 'wesbos';  
+  window.addEventListener('keyup', (e) => {
+    console.log(e.key); 
+    pressed.push(e.key);
+    //return last six character
+    pressed.splice(-secretCode.length -1, pressed.length - secretCode.length); //index, number of items to be removed
+    if(pressed.join('').toLowerCase().includes(secretCode)){
+      console.log('YOU DID IT');
+      cornify_add();
+    }
+    console.log(pressed);
+  });
 </script>
 </body>
 </html>
