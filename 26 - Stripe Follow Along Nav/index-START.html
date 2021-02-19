@@ -123,6 +123,7 @@
     justify-content: center;
   }
 
+  /* > child combinator, It will target elements which are DIRECT children of a particular element. */
   .cool > li {
     position: relative;
     display: flex;
@@ -139,7 +140,7 @@
     transition: all 0.5s;
     transform: translateY(100px);
     will-change: opacity;
-    display: none;
+    display: none; 
   }
 
   .trigger-enter .dropdown {
@@ -157,6 +158,7 @@
     background: #fff;
     border-radius: 4px;
     box-shadow: 0 50px 100px rgba(50,50,93,.1), 0 15px 35px rgba(50,50,93,.15), 0 5px 15px rgba(0,0,0,.1);
+    /* 0.3s width 0.1s height */
     transition: all 0.3s, opacity 0.1s, transform 0.2s;
     transform-origin: 50% 0;
     display: flex;
@@ -220,6 +222,46 @@
 </style>
 
 <script>
+  const triggers = document.querySelectorAll('.cool > li');
+  const background = document.querySelector('.dropdownBackground');
+  const nav = document.querySelector('.top');
+  // setTimeout should take an arrow function to use parent's 'this'  (li)
+  function handleEnter(){
+     this.classList.add('trigger-enter');
+     // or () => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
+     setTimeout(() => {
+          if(this.classList.contains('trigger-enter')){
+            this.classList.add('trigger-enter-active')
+          }
+     }, 150);
+     background.classList.add('open'); 
+    //find the related dropdown
+     const dropdown = this.querySelector('.dropdown');
+     const dropdownCoords = dropdown.getBoundingClientRect();
+     const navCoords = nav.getBoundingClientRect();
+     // some element can be add top of the nav so -navCoords.(top)
+     const coords = {
+       height: dropdownCoords.height,
+       width: dropdownCoords.width,
+       top: dropdownCoords.top - navCoords.top,
+       left: dropdownCoords.left - navCoords.left,
+     };
+
+     background.style.setProperty('width', `${coords.width}px`);
+     background.style.setProperty('height', `${coords.height}px`);
+     background.style.setProperty('transform',`translate(${coords.left}px, ${coords.top}px)`);  //bcs it is a css property
+     console.log(navCoords.top);
+     console.log(dropdownCoords.top)
+  } 
+  
+  function handleLeave() {
+     this.classList.remove('trigger-enter', 'trigger-enter-active');
+     background.classList.remove('open');
+  }
+
+  triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
+  triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
+
 </script>
 
 </body>
