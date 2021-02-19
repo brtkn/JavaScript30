@@ -40,9 +40,33 @@
   }
 </style>
 
-<button></button>
+<button>Once-Button</button>
 <script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+  // capture top ==> down, fired  down ==> top  it is like a hurricane
+  // stopPropagation => stop bubbling this event up, capture should be false;
+  function logText(e) {
+    console.log(this.classList.value);
+    //e.stopPropagation();                            //stop bubbling 
+    //console.log(this);
+  }
+  // capture: false ; is default  , evets bubble up
+  // 3. argument options object, run the function (logText) down
+  divs.forEach( div => div.addEventListener('click',logText, {
+    capture: false,
+    once: true               // listen for a click once and unbind itself, you should reload the page
+  }));
+  
+  // let's send 3.argument do not forget comma
+  button.addEventListener('click', () => {
+    console.log('Click!!') ;
+  },{
+    once: true
+  });
 
+  // once: true it is the same thing 
+  //div.removeEventListener('click', logText);
 </script>
 </body>
 </html>
